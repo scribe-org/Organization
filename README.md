@@ -15,11 +15,13 @@ Scribe provides language keyboards that empower language learners to communicate
 
 # Current Discussions [`↩`](#contents) <a id="current-discussions"></a>
 
-Work that is being discussed includes:
+Topics currently being discussed include:
 
 - What discussion platforms should be used to help Scribe developers communicate [(see issue)]()
 
-- Which desktop platforms Scribe could be ported to [(see issue)]()
+- Which desktop platforms could Scribe be ported to [(see issue)]()
+
+- Discussing branding elements such as color, font and the logo [(see issue)]()
 
 # To-Do [`↩`](#contents) <a id="to-do"></a>
 
