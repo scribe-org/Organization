@@ -19,7 +19,7 @@ Topics currently being discussed include:
 
 - What discussion platforms should be used to help Scribe developers communicate [(see issue)]()
 
-- Which desktop platforms could Scribe be ported to [(see issue)]()
+- Which other platforms could Scribe be ported to [(see issue)]()
 
 - Discussing branding elements such as color, font and the logo [(see issue)]()
 
