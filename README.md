@@ -17,11 +17,11 @@ Scribe provides language keyboards that empower language learners to communicate
 
 Topics currently being discussed include:
 
-- Discussion platforms that could be used to help Scribe developers communicate [(see issue)]()
+- Platforms that could be used to help Scribe developers communicate [(see issue)]()
 
 - Other platforms that Scribe could be ported to [(see issue)]()
 
-- Discussing branding elements such as color, font and the logo [(see issue)]()
+- Branding elements such as color, font and the logo [(see issue)]()
 
 - The best way to get organization status for Scribe so that it can be released as such [(see issue)]()
 
