@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://github.com/scribe-org/Organization"><img src="https://github.com/scribe-org/Organization/blob/main/logo/Scribe_logo_transparent.png" width=423 height=164></a>
+  <a href="https://github.com/scribe-org/Organization"><img src="https://raw.githubusercontent.com/scribe-org/Organization/main/logo/Scribe_logo_transparent.png" width=423 height=164  alt="Scribe Logo"></a>
 </div>
 
 ---
