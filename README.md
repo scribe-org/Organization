@@ -1,6 +1,7 @@
 <div align="center">
   <a href="https://github.com/scribe-org/Organization"><img src="https://raw.githubusercontent.com/scribe-org/Organization/main/logo/ScribeAppLogo.png" width=512 height=230 alt="Scribe Logo"></a>
 </div>
+
 ---
 
 ### Organization files and discussion
