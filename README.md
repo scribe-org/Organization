@@ -2,9 +2,9 @@
   <a href="https://github.com/scribe-org/Organization"><img src="https://raw.githubusercontent.com/scribe-org/Organization/main/logo/ScribeAppLogo.png" width=512 height=230 alt="Scribe Logo"></a>
 </div>
 
----
+<ol></ol>
 
-### Organization files
+## Organization files
 
 Scribe provides language keyboards and interfaces that empower second language learners to communicate with confidence. This repository contains the Scribe branding files and serves as a base for discussing the organization itself. For discussions of our projects see the discussion channels for [Scribe-iOS](https://github.com/scribe-org/Scribe-iOS), [Scribe-Android](https://github.com/scribe-org/Scribe-Android) and [Scribe-Desktop](https://github.com/scribe-org/Scribe-Desktop).
 
