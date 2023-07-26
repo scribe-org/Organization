@@ -14,8 +14,9 @@ This markdown file provides important information about [Wikidata](https://www.w
 
 - [First steps into Wikidata](#first-steps)
   - [Data structure](#data-structure)
-  - [First query](#first-query)
-  - [Lexeme query](#lexeme-query)
+  - [SPQARL](#spaqrl)
+  - [First queries](#first-queries)
+  - [Lexeme queries](#lexeme-queries)
 - [Scribe-Data and Wikidata](#scribe-data)
 - [Scribe-Server and Wikidata](#scribe-server)
 - [Further resources](#further-resources)
@@ -24,19 +25,40 @@ This markdown file provides important information about [Wikidata](https://www.w
 
 # First Steps into Wikidata [`⇧`](#contents)
 
-An important distinction to make is that [Wikidata](https://www.wikidata.org/) is an instance of [Wikibase](https://wikiba.se/) - an open source software for creating collaborative knowledge bases. Wikimedia Deutschland also serves other Wikibase instances such as those found on [Wikibase Cloud](https://www.wikibase.cloud/) that are hosted and [Wikibase Suite](https://www.mediawiki.org/wiki/Wikibase/Docker) that provides [dockerized](https://www.docker.com/) versions of the software for self hosting.
+An important distinction to make is that [Wikidata](https://www.wikidata.org/) is an instance of [Wikibase](https://wikiba.se/) - an open source software for creating collaborative knowledge bases. Wikimedia Deutschland also serves other [Wikibase](https://wikiba.se/) instances such as those found on [Wikibase Cloud](https://www.wikibase.cloud/) that are hosted and [Wikibase Suite](https://www.mediawiki.org/wiki/Wikibase/Docker) that provides [dockerized](https://www.docker.com/) versions of the software for self hosting.
 
 <a id="data-structure"></a>
 
 ### Data structure [`⇧`](#contents)
 
-Importantly [Wikidata](https://www.wikidata.org/) and other [Wikibase](https://wikiba.se/) instances are not relational databases, but rather [RDF (Resource Description Framework)](https://en.wikipedia.org/wiki/Resource_Description_Framework) graph databases. RDF is a directed graph composed of triple statements that include:
+Importantly [Wikidata](https://www.wikidata.org/) and other [Wikibase](https://wikiba.se/) instances are not relational databases, but rather [RDF (Resource Description Framework)](https://en.wikipedia.org/wiki/Resource_Description_Framework) graph databases known as [triplestores](https://en.wikipedia.org/wiki/Triplestore). RDF is a directed graph composed of triple statements that include:
 
 1. A subject (the entity being related)
 2. A predicate (the relation between the subject and object)
 3. An object (the entity being related to)
 
-Note that objects can be a literal value (int, string, date, etc) or another entity within the graph. In Wikidata subjects and non-literal objects are generally stored as [QIDs](https://www.wikidata.org/wiki/Q43649390) and predicates are stored as PIDs (see the [Further resources](#further-resources) section for the documentation for Wikidata identifiers). Scribe specifically uses Lexemes that are represented as LIDs where each base word is given one unique identifier.
+Note that objects can be a literal value (int, string, date, etc) or another entity within the graph. In Wikidata subjects and non-literal objects are generally stored as [QIDs](https://www.wikidata.org/wiki/Q43649390) and predicates are stored as PIDs (see the [Further resources](#further-resources) section for the documentation for Wikidata identifiers). Scribe specifically uses Lexemes that are represented as LIDs where each base lemma (word) is given one unique identifier.
+
+A few examples of triples are the following:
+
+- Germany (subject) has the capital (predicate) Berlin (object).
+- Berlin (subject) has population (predicate) 3.7 million (object).
+- The European Union (subject) has the member (predicate) Germany (object).
+- Germany (subject) is a member of (predicate) the European Union (object).
+
+One of the main benefits of RDF triplestores is that there are no limits based on the current structure of the data. If a new relationship is needed, then a predicate for it can be made and the associated objects can then linked to their subjects.
+
+When comparing to conventional data structures, it's important to mark the distinction that [Wikidata](https://www.wikidata.org/) data is not stored in tables. There are [regular dumps of Wikidata](https://www.wikidata.org/wiki/Wikidata:Database_download) that also come in relational database forms (with `subject`, `predicate` and `object` columns) as well as JSON and other types, but the data on [Wikidata](https://www.wikidata.org/) is stored using RDF relationships.
+
+<a id="spaqrl"></a>
+
+### SPARQL [`⇧`](#contents)
+
+Because the structure of [Wikidata](https://www.wikidata.org/) data is different from traditional relational databases, we also need a different way to query it. [SPARQL](https://en.wikipedia.org/wiki/SPARQL) - the [recursive acronym](https://en.wikipedia.org/wiki/Recursive_acronym) being SPARQL Protocol and RDF Query Language - is a standard of querying RDF formatted data.
+
+<a id="first-queries"></a>
+
+### First queries [`⇧`](#contents)
 
 Below we find the most common Wikidata example of [Q42 - Douglas Adams](https://www.wikidata.org/wiki/Q42), who was specifically given this in homage to his book [The Hitchhiker's Guide to the Galaxy](https://en.wikipedia.org/wiki/The_Hitchhiker%27s_Guide_to_the_Galaxy) in which the "Ultimate Question of Life, the Universe, and Everything" is found to be the number 42 :)
 
@@ -44,15 +66,30 @@ Below we find the most common Wikidata example of [Q42 - Douglas Adams](https://
   <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Datamodel_in_Wikidata.svg" width=1024 alt="Scribe Logo">
 </div>
 
-When comparing to conventional data structures, it's important to mark the distinction that [Wikidata](https://www.wikidata.org/) data is not stored in tables. There are [regular dumps of Wikidata](https://www.wikidata.org/wiki/Wikidata:Database_download) that also come in relational database forms as well as JSON and other types, but the data on [Wikidata](https://www.wikidata.org/) is stored using RDF relationships.
+Please go to the [Wikidata Query Service](https://query.wikidata.org/) and try out the following queries to get information about Douglas Adams:
 
-<a id="first-query"></a>
+Here are a few more queries to try out on the [Wikidata Query Service](https://query.wikidata.org) (can you change them a bit to get new results?):
 
-### First query [`⇧`](#contents)
+#### All countries in the European Union
 
-<a id="lexeme-query"></a>
+```
+SELECT ?country ?countryLabel
+WHERE
+{
+  ?country   wdt:P463     wd:Q458.
+  #country   #member of   #European Union
+  SERVICE wikibase:label { bd:serviceParam wikibase:language
+  "[AUTO_LANGUAGE], en". }
+}
+```
 
-### Lexeme query [`⇧`](#contents)
+#### Date of birth
+
+fdas
+
+<a id="lexeme-queries"></a>
+
+### Lexeme queries [`⇧`](#contents)
 
 <a id="scribe-data"></a>
 
@@ -60,7 +97,8 @@ When comparing to conventional data structures, it's important to mark the disti
 
 At one point within the Scribe-iOS repository, [Scribe-Data](https://github.com/scribe-org/Scribe-Data) is now a standalone data process that interfaces with [Wikidata's lexicographical data](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data). [Scribe-Data](https://github.com/scribe-org/Scribe-Data) has the following functionality:
 
-- Defines SPARQL queries with which data can be extracted from [Scribe-Data](https://github.com/scribe-org/Scribe-Data)
+- Defines SPARQL queries with which data can be extracted from [Wikidata](https://www.wikidata.org/)
+- Passes these queries to Wikidata via the Python library [SPARQLwrapper](https://github.com/RDFLib/sparqlwrapper)
 - Formats extracted data and prepares them for use within Scribe applications
 - Creates SQLite databases that form the basis of language packs that are loaded into Scribe app interfaces
 
@@ -87,8 +125,9 @@ The following are other resources that the community suggests to broaden your un
 
 ### Querying Wikidata
 
+- [Wikidata SPARQL tutorial](https://www.wikidata.org/wiki/Wikidata:SPARQL_tutorial)
+- [Wikidata tutorial by Wikimedia Israel](https://wdqs-tutorial.toolforge.org/)
+
 ### Wikidata lexemes
 
 - [Example lexeme queries](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data/Ideas_of_queries)
-
-### Tools used by Scribe
