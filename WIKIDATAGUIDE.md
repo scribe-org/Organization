@@ -198,7 +198,7 @@ SELECT DISTINCT ?lexeme ?lemma ?singular ?plural WHERE {
 LIMIT 10
 ```
 
-From here we're able to create most of the queries used by Scribe by changing the language that lexemes should be associated with, the category of word that we need (nouns, verbs, ...) and editing the optional form selections to include all needed information about the lemma for Scribe.
+From here we're able to create most of the queries used by Scribe by changing the language that lexemes should be associated with, the category of word that we need (nouns, verbs, etc) and editing the optional form selections to include all needed information about the lemma that's needed for Scribe applications.
 
 <a id="scribe-data"></a>
 
