@@ -31,13 +31,13 @@ An important distinction to make is that [Wikidata](https://www.wikidata.org/) i
 
 ### Data structure [`⇧`](#contents)
 
-Importantly [Wikidata](https://www.wikidata.org/) and other [Wikibase](https://wikiba.se/) instances are not relational databases, but rather [RDF (Resource Description Framework)](https://en.wikipedia.org/wiki/Resource_Description_Framework) graph databases known as [triplestores](https://en.wikipedia.org/wiki/Triplestore). RDF is a directed graph composed of triple statements that include:
+[Wikidata](https://www.wikidata.org/) and other [Wikibase](https://wikiba.se/) instances are not relational databases, but rather [RDF (Resource Description Framework)](https://en.wikipedia.org/wiki/Resource_Description_Framework) graph databases known as [triplestores](https://en.wikipedia.org/wiki/Triplestore). RDF is a directed graph composed of triple statements that include:
 
 1. A subject (the entity being related)
 2. A predicate (the relation between the subject and object)
 3. An object (the entity being related to)
 
-Note that objects can be a literal value (int, string, date, etc) or another entity within the graph. In [Wikidata](https://www.wikidata.org/) subjects and non-literal objects are generally stored as [QIDs](https://www.wikidata.org/wiki/Q43649390) and predicates are stored as PIDs (see the [Further resources](#further-resources) section for the documentation for [Wikidata](https://www.wikidata.org/) identifiers). Scribe specifically uses Lexemes that are represented as LIDs where each base lemma (word) is given one unique identifier.
+Note that objects can be a literal value (int, string, date, etc) or another entity within the graph. In [Wikidata](https://www.wikidata.org/) subjects and non-literal objects are generally stored as [QIDs](https://www.wikidata.org/wiki/Q43649390) and predicates are stored as PIDs (see the [Further resources](#further-resources) section for the documentation for [Wikidata](https://www.wikidata.org/) identifiers). Scribe specifically uses Lexemes that are represented as LIDs where each [lemma](<https://en.wikipedia.org/wiki/Lemma_(morphology)>) (base of a word) is given one unique identifier.
 
 A few examples of triples are the following:
 
@@ -56,7 +56,7 @@ When comparing to conventional data structures, it's important to mark the disti
 
 Because the structure of [Wikidata](https://www.wikidata.org/) data is different from traditional relational databases, we also need a different way to query it. [SPARQL](https://en.wikipedia.org/wiki/SPARQL) - the [recursive acronym](https://en.wikipedia.org/wiki/Recursive_acronym) being "SPARQL Protocol and RDF Query Language" - is a standard of querying RDF formatted data.
 
-We'll soon see examples that show how it works, but it's important to note that for triples where the object is a Wikidata entity the response to queries is its ID, not the string label. In order to get labels for our results we need to add in the labeling service to our queries that will then give us the ability to create any `colNameLabel` column for a column of IDs `colName`. We add this service via the following line that sets English as the default returned value at the end:
+We'll soon see examples that show how it works, but it's important to note that for triples where the object is a [Wikidata](https://www.wikidata.org/) entity the response to queries is its unique ID, not the string label. In order to get labels for our results we need to add in the labeling service to our queries that will then give us the ability to create any `colNameLabel` column for a column of IDs `colName`. We add this service via the following line that sets English as the default returned value at the end:
 
 ```
 SERVICE wikibase:label { bd:serviceParam wikibase:language
@@ -67,7 +67,7 @@ Note that `?colNameDescription` functions in a similar way where the description
 
 Another interesting part of SPARQL is that it's also an HTTP transport protocol, so federated queries can also be written that access distributed resources across multiple different SPARQL endpoints. In this way [Wikidata](https://www.wikidata.org/) can be linked to other [Wikibase](https://wikiba.se/) instances or other databases within the linked open data infrastructure.
 
-Note that there are also [aggregation functions](https://en.wikibooks.org/wiki/SPARQL/Aggregate_functions) for SPARQL as in any query language. We're not going to cover them in this document as they're not important for Scribe, but please look into them to broaden your understanding!
+Note that there are also [aggregation functions](https://en.wikibooks.org/wiki/SPARQL/Aggregate_functions) for SPARQL as in any query language. The only usage of aggregation functions for Scribe is [check_language_data.sparql](https://github.com/scribe-org/Scribe-Data/blob/main/src/scribe_data/check_language_data.sparql) within [Scribe-Data](https://github.com/scribe-org/Scribe-Data). This query allows us to get the totals for categories of words like nouns, verbs and others on a per language basis. The results allow the team to check the overall coverage for the language within [Wikidata](https://www.wikidata.org/) lexemes to prioritize which languages to implement next.
 
 <a id="first-queries"></a>
 
@@ -244,6 +244,7 @@ The following are other resources that the community suggests to broaden your un
 
 - [Wikidata lexicographical data](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data)
 - [Wikidata example lexeme queries](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data/Ideas_of_queries)
+- [Wikidata Lexicographical Data Statistics](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data/Statistics/Counts_of_various_things_by_language)
 
 ### Tools used by Scribe
 
