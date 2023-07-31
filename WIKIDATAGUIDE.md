@@ -4,7 +4,7 @@
 
 [Wikidata](https://www.wikidata.org/) data is licensed [CC0](https://creativecommons.org/publicdomain/zero/1.0/) meaning [reuse is permitted with no restriction for personal and commercial purposes](https://creativecommons.org/publicdomain/zero/1.0/). Even though you can use [Wikidata](https://www.wikidata.org/) data without giving credit, we at Scribe suggest that you actively promote your use of [Wikidata](https://www.wikidata.org/) and join the Linked Open Data movement so that all can benefit from the wealth of information created by its dedicated supporters.
 
-Scribe uses [Wikidata](https://www.wikidata.org/) - specifically the [lexicographical data](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data) - as a source of language data via [Scribe-Data](https://github.com/scribe-org/Scribe-Data), [Scribe-Server](https://github.com/scribe-org/Scribe-Server). All the noun genders, verb conjugations and so much more come directly from Wikidata contributors ❤️
+Scribe uses [Wikidata](https://www.wikidata.org/) - specifically the [lexicographical data](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data) - as a source of language data via [Scribe-Data](https://github.com/scribe-org/Scribe-Data) and [Scribe-Server](https://github.com/scribe-org/Scribe-Server). All the noun genders, verb conjugations and so much more come directly from Wikidata contributors ❤️
 
 This markdown file provides important information about [Wikidata](https://www.wikidata.org/) that is geared towards people interested in learning about it in relation to working on Scribe applications. Edits are welcome to expand and change this document as the community sees fit!
 
@@ -41,10 +41,10 @@ Note that objects can be a literal value (int, string, date, etc) or another ent
 
 A few examples of triples are the following:
 
-- Germany (subject) has the capital (predicate) Berlin (object).
-- Berlin (subject) has population (predicate) 3.7 million (object).
-- The European Union (subject) has the member (predicate) Germany (object).
-- Germany (subject) is a member of (predicate) the European Union (object).
+- Germany (subject - [Q183](https://www.wikidata.org/wiki/Q183)) has the capital (predicate - [P36](https://www.wikidata.org/wiki/Property:P36)) Berlin (object - [Q64](https://www.wikidata.org/wiki/Q64)).
+- Berlin (subject - [Q64](https://www.wikidata.org/wiki/Q64)) has population (predicate - [P1082](https://www.wikidata.org/wiki/Property:P1082)) 3.7 million (object - an integer).
+- The European Union (subject - [Q458](https://www.wikidata.org/wiki/Q458)) has the member (predicate - [P527](https://www.wikidata.org/wiki/Property:P527)) Germany (object - [Q183](https://www.wikidata.org/wiki/Q183)).
+- Germany (subject - [Q183](https://www.wikidata.org/wiki/Q183)) is a member of (predicate - [P463](https://www.wikidata.org/wiki/Property:P463)) the European Union (object - [Q458](https://www.wikidata.org/wiki/Q458)).
 
 One of the main benefits of RDF triplestores is that there are no limits based on the current structure of the data. If a new relationship is needed, then a predicate for it can be made and the associated objects can then be linked to their subjects.
 
@@ -55,15 +55,6 @@ When comparing to conventional data structures, it's important to mark the disti
 ### SPARQL [`⇧`](#contents)
 
 Because the structure of [Wikidata](https://www.wikidata.org/) data is different from traditional relational databases, we also need a different way to query it. [SPARQL](https://en.wikipedia.org/wiki/SPARQL) - the [recursive acronym](https://en.wikipedia.org/wiki/Recursive_acronym) being "SPARQL Protocol and RDF Query Language" - is a standard of querying RDF formatted data.
-
-We'll soon see examples that show how it works, but it's important to note that for triples where the object is a [Wikidata](https://www.wikidata.org/) entity the response to queries is its unique ID, not the string label. In order to get labels for our results we need to add in the labeling service to our queries that will then give us the ability to create any `colNameLabel` column for a column of IDs `colName`. We add this service via the following line that sets English as the default returned value at the end:
-
-```
-SERVICE wikibase:label { bd:serviceParam wikibase:language
-  "[AUTO_LANGUAGE], en". }
-```
-
-Note that `?colNameDescription` functions in a similar way where the description of the ID can be returned.
 
 Another interesting part of SPARQL is that it's also an HTTP transport protocol, so federated queries can also be written that access distributed resources across multiple different SPARQL endpoints. In this way [Wikidata](https://www.wikidata.org/) can be linked to other [Wikibase](https://wikiba.se/) instances or other databases within the linked open data infrastructure.
 
@@ -81,20 +72,33 @@ Below we find the most common [Wikidata](https://www.wikidata.org/) example of [
 
 Please go to the [Wikidata Query Service](https://query.wikidata.org/) and try out the following queries to get information about Douglas Adams. You can also click the section header to go directly to the query service with the query populated.
 
-#### [Books that he is the author (P50) of](https://w.wiki/78U7)
+#### [Books that he (Q42) is the author (P50) of](https://w.wiki/7APj)
 
 ```
 SELECT ?book ?bookLabel ?bookDescription
 WHERE
 {
-  ?book wdt:P50 wd:Q42.
+  # Subject  # Author  # Douglas Adams
+  ?book      wdt:P50   wd:Q42.
 
   SERVICE wikibase:label { bd:serviceParam wikibase:language
   "[AUTO_LANGUAGE], en". }
 }
 ```
 
-#### [His date of birth (P569)](https://w.wiki/78To)
+> [!NOTE]\
+> The Scribe team would strongly suggest that VS Code developers download the [Wikidata QID Labels VS Code extension](https://marketplace.visualstudio.com/items?itemName=blokhinnv.wikidataqidlabels) that provides an in editor tooltip for Wikidata ID labels.
+
+It's important to note that for triples where the object is a [Wikidata](https://www.wikidata.org/) entity the response to queries is its unique ID, not the string label. In order to get labels for our results we need to add in the labeling service to our queries that will then give us the ability to create any `colNameLabel` column for a column of IDs `colName`. We add this service via the following line that sets English as the default returned value at the end:
+
+```
+SERVICE wikibase:label { bd:serviceParam wikibase:language
+  "[AUTO_LANGUAGE], en". }
+```
+
+Note that `?colNameDescription` functions in a similar way where the description of the ID can be returned.
+
+#### [His (Q42) date of birth (P569)](https://w.wiki/7APn)
 
 > [!NOTE]\
 > We don't need to call the label service in this query as the object isn't a Wikidata entity.
@@ -103,44 +107,55 @@ WHERE
 SELECT ?dateOfBirth
 WHERE
 {
-  wd:Q42 wdt:P569 ?dateOfBirth.
+  # Douglas Adams  # Date of Birth  # Object
+  wd:Q42           wdt:P569         ?dateOfBirth.
 }
 ```
 
-#### [His place of birth (P19)](https://w.wiki/78Tk)
+#### [His (Q42) place of birth (P19)](https://w.wiki/7APo)
 
 ```
 SELECT ?placeOfBirth ?placeOfBirthLabel
 WHERE
 {
-  wd:Q42 wdt:P19 ?placeOfBirth.
+  # Douglas Adams  # Place of Birth  # Object
+  wd:Q42           wdt:P19           ?placeOfBirth.
 
   SERVICE wikibase:label { bd:serviceParam wikibase:language
   "[AUTO_LANGUAGE], en". }
 }
 ```
 
-#### [All people with the same place of birth (P19) as him](https://w.wiki/78UV)
+#### [All people (Q5) with the same place of birth (P19) as him (Q42)](https://w.wiki/7APp)
 
 ```
 SELECT DISTINCT ?person ?personLabel ?personDescription
 WHERE {
-    wd:Q42 wdt:P19 ?placeOfBirth.
-    ?person wdt:P31 wd:Q5;
-            wdt:P19/wdt:P131* ?placeOfBirth;
+    # Douglas Adams  # Place of Birth  # Object
+    wd:Q42           wdt:P19           ?placeOfBirth.
+    # Subject  # Instance of  # Human
+    ?person    wdt:P31        wd:Q5;
+               # Place of birth/*  # Object
+               wdt:P19/wdt:P131*   ?placeOfBirth;
 
     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
 }
 ```
 
-Here's one more query to try out on the [Wikidata Query Service](https://query.wikidata.org). Can you change it to get different results?
+Here's one more query to try out on the [Wikidata Query Service](https://query.wikidata.org). Can you change it to get different results? The following are great ways to find the [Wikidata](https://www.wikidata.org/) IDs you're looking for to rewrite the query below:
 
-#### [All countries that are members of (P463) the European Union (Q458)](https://w.wiki/78UZ)
+- Search for the main item on [Wikidata](https://www.wikidata.org/) (in this case [the European Union](https://www.wikidata.org/wiki/Q458))
+  - Check statements on the left and navigate to their PIDs
+- Use a search engine to search for `Wikidata NAME_OF_ITEM`, with the first result normally being the correct one
+- Use the [Wikidata Query Builder](https://www.wikidata.org/wiki/Wikidata:Query_Builder) to construct your query from normal language
+
+#### [All countries that are members of (P463) the European Union (Q458)](https://w.wiki/7APq)
 
 ```
 SELECT ?country ?countryLabel
 WHERE
 {
+  # Subject  # Member of  # The European Union
   ?country   wdt:P463     wd:Q458.
 
   SERVICE wikibase:label { bd:serviceParam wikibase:language
@@ -154,14 +169,18 @@ WHERE
 
 The focus now shifts to the kind of data that's of interest to Scribe. [Wikidata](https://www.wikidata.org/) [lexicographical data](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data) maps out lemmas (base versions of words) as LIDs and attaches all forms of the lemma as queryable points of data. Let's start with a base query:
 
-#### [Query ten German (Q188) nouns (Q1084)](https://w.wiki/78V8)
+#### [Query ten German (Q188) nouns (Q1084)](https://w.wiki/7APr)
 
 ```
-SELECT DISTINCT ?lexeme ?lemma WHERE {
-
+SELECT DISTINCT ?lexeme ?lemma
+WHERE {
+  # Subject
   ?lexeme a ontolex:LexicalEntry ;
+                 # German
     dct:language wd:Q188 ;
+    # Predicate              # Noun
     wikibase:lexicalCategory wd:Q1084 ;
+    # The following is like labels above.
     wikibase:lemma ?lemma .
 }
 
@@ -239,6 +258,8 @@ The following are other resources that the community suggests to broaden your un
 - [Wikidata SPARQL tutorial](https://www.wikidata.org/wiki/Wikidata:SPARQL_tutorial)
 - [Wikidata tutorial by Wikimedia Israel](https://wdqs-tutorial.toolforge.org/)
 - [Wikidata example SPARQL queries](https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/queries/examples)
+- [Wikidata Query Builder](https://www.wikidata.org/wiki/Wikidata:Query_Builder)
+- [Wikidata Query Builder Documentation](https://query.wikidata.org/querybuilder)
 
 ### Wikidata lexemes
 
