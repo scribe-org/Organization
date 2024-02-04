@@ -4,13 +4,13 @@ This markdown file documents the architecture for the whole of [Scribe](https://
 
 <a id="contents"></a>
 
-# **Contents**
+## Contents
 
 - [Full architecture diagram](#full-architecture)
 
 <a id="full-architecture"></a>
 
-# Full architecture diagram [`⇧`](#contents)
+## Full architecture diagram [`⇧`](#contents)
 
 The following diagram represents the relationships between the Scribe projects and external systems and sources, as they relate to the development plans for Scribe. In other words, the shown architecture depicts a future state for Scribe, which is subject to revision if plans for Scribe change.
 
