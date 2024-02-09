@@ -7,6 +7,7 @@ This markdown file documents the architecture for the whole of [Scribe](https://
 ## Contents
 
 - [Full architecture diagram](#full-architecture)
+- [Current architecture diagram](#current-architecture)
 
 <a id="full-architecture"></a>
 
@@ -57,4 +58,42 @@ The following diagram represents the relationships between the Scribe projects a
         WKD & WKP & HGF & UNI --->|Job extracts data| DAT
 ```
 
-The architecture diagram was created using [mermaid](https://github.com/mermaid-js/mermaid), the diagramming tool with rendering supported in GitHub markdown.
+<a id="current-architecture"></a>
+
+## Current architecture diagram [`⇧`](#contents)
+
+The following diagram represents the relationships between the Scribe projects and external systems and sources, as they relate to the current state for Scribe. In other words, the diagram is meant to receive more frequent edits, as the intent for it is to accompany the evolution of the Scribe architecture.
+
+```mermaid
+    graph BT
+        %%%%
+        %% ENTITIES
+
+        %% Scribe codebase
+        IOS(Scribe-iOS codebase)
+
+        %% Scribe ETL process
+        DAT[[Scribe-Data]]
+
+        %% Data sources
+        WKD[(Wikidata)]
+        WKP[(Wikipedia)]
+        HGF{{Hugging Face}}
+        UNI((Unicode))
+
+        %% Local development
+        DEV[/Scribe developer\]
+        subgraph LDM [Local dev machine]
+            IOS
+            DAT
+        end
+
+        %%%%
+        %% FLOW
+
+        DEV o-.-o|Dev manually runs ETL| DAT
+        WKD & WKP & HGF & UNI ---->|ETL extracts data| DAT
+        DAT -->|ETL loads data| IOS
+```
+
+The architecture diagrams above were created using [mermaid](https://github.com/mermaid-js/mermaid), the diagramming tool with rendering supported in GitHub markdown.
