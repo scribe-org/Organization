@@ -92,7 +92,7 @@ The following diagram represents the relationships between the Scribe projects a
         %% FLOW
 
         DEV o-.-o|Dev manually runs ETL| DAT
-        WKD & WKP & HGF & UNI ---->|ETL extracts data| DAT
+        WKD & WKP & HGF & UNI --->|ETL extracts data| DAT
         DAT -->|ETL loads data| IOS
 ```
 
