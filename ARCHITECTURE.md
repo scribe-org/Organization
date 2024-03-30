@@ -26,7 +26,7 @@ The following diagram represents the relationships between the Scribe projects a
         DSK([Scribe-Desktop])
 
         %% Client dependencies
-        I18N((Scribe-i18n))
+        I18N(Scribe-i18n)
 
         %% Scribe data/service
         API{{Scribe-Server API}}
