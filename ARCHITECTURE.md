@@ -25,6 +25,9 @@ The following diagram represents the relationships between the Scribe projects a
         ADR([Scribe-Android])
         DSK([Scribe-Desktop])
 
+        %% Client dependencies
+        I18N((Scribe-i18n))
+
         %% Scribe data/service
         API{{Scribe-Server API}}
         DBS[(Scribe-Server DB)]
@@ -52,6 +55,7 @@ The following diagram represents the relationships between the Scribe projects a
         %%%%
         %% DATA FLOW
 
+        I18N --->|Provides localization data| IOS & ADR & DSK
         API --->|Client requests data| IOS & ADR & DSK
         DBS --->|API queries for data| API
         DAT --->|Job loads data| DBS
