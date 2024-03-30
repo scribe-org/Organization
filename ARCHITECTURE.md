@@ -55,7 +55,7 @@ The following diagram represents the relationships between the Scribe projects a
         %%%%
         %% DATA FLOW
 
-        I18N --->|Provides Localization Data| IOS & ADR & DSK
+        I18N --->|Provides localization data| IOS & ADR & DSK
         API --->|Client requests data| IOS & ADR & DSK
         DBS --->|API queries for data| API
         DAT --->|Job loads data| DBS
