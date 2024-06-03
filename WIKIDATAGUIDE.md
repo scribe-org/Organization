@@ -72,17 +72,20 @@ Below we find the most common [Wikidata](https://www.wikidata.org/) example of [
 
 Please go to the [Wikidata Query Service](https://query.wikidata.org/) and try out the following queries to get information about Douglas Adams. You can also click the section header to go directly to the query service with the query populated.
 
-#### [Books that he (Q42) is the author (P50) of](https://w.wiki/7APj)
+#### [Books that he (Q42) is the author (P50) of](https://w.wiki/AHCb)
 
 ```
-SELECT ?book ?bookLabel ?bookDescription
-WHERE
-{
-  # Subject  # Author  # Douglas Adams
-  ?book      wdt:P50   wd:Q42.
+SELECT
+    ?book
+    ?bookLabel
+    ?bookDescription
 
-  SERVICE wikibase:label { bd:serviceParam wikibase:language
-  "[AUTO_LANGUAGE], en". }
+WHERE {
+    # Subject  # Author  # Douglas Adams
+    ?book      wdt:P50   wd:Q42.
+
+    SERVICE wikibase:label { bd:serviceParam wikibase:language
+    "[AUTO_LANGUAGE], en". }
 }
 ```
 
@@ -98,38 +101,45 @@ SERVICE wikibase:label { bd:serviceParam wikibase:language
 
 Note that `?colNameDescription` functions in a similar way where the description of the ID can be returned.
 
-#### [His (Q42) date of birth (P569)](https://w.wiki/7APn)
+#### [His (Q42) date of birth (P569)](https://w.wiki/8jHg)
 
 > [!NOTE]\
 > We don't need to call the label service in this query as the object isn't a Wikidata entity.
 
 ```
-SELECT ?dateOfBirth
-WHERE
-{
-  # Douglas Adams  # Date of Birth  # Object
-  wd:Q42           wdt:P569         ?dateOfBirth.
+SELECT
+    ?dateOfBirth
+
+WHERE {
+    # Douglas Adams  # Date of Birth  # Object
+    wd:Q42           wdt:P569         ?dateOfBirth.
 }
 ```
 
-#### [His (Q42) place of birth (P19)](https://w.wiki/7APo)
+#### [His (Q42) place of birth (P19)](https://w.wiki/AHCc)
 
 ```
-SELECT ?placeOfBirth ?placeOfBirthLabel
-WHERE
-{
-  # Douglas Adams  # Place of Birth  # Object
-  wd:Q42           wdt:P19           ?placeOfBirth.
+SELECT
+    ?placeOfBirth
+    ?placeOfBirthLabel
 
-  SERVICE wikibase:label { bd:serviceParam wikibase:language
-  "[AUTO_LANGUAGE], en". }
+WHERE {
+    # Douglas Adams  # Place of Birth  # Object
+    wd:Q42           wdt:P19           ?placeOfBirth.
+
+    SERVICE wikibase:label { bd:serviceParam wikibase:language
+    "[AUTO_LANGUAGE], en". }
 }
 ```
 
-#### [All people (Q5) with the same place of birth (P19) as him (Q42)](https://w.wiki/7APp)
+#### [All people (Q5) with the same place of birth (P19) as him (Q42)](https://w.wiki/AHCX)
 
 ```
-SELECT DISTINCT ?person ?personLabel ?personDescription
+SELECT DISTINCT
+    ?person
+    ?personLabel
+    ?personDescription
+
 WHERE {
     # Douglas Adams  # Place of Birth  # Object
     wd:Q42           wdt:P19           ?placeOfBirth.
@@ -149,17 +159,19 @@ Here's one more query to try out on the [Wikidata Query Service](https://query.w
 - Use a search engine to search for `Wikidata NAME_OF_ITEM`, with the first result normally being the correct one
 - Use the [Wikidata Query Builder](https://www.wikidata.org/wiki/Wikidata:Query_Builder) to construct your query from normal language
 
-#### [All countries that are members of (P463) the European Union (Q458)](https://w.wiki/7APq)
+#### [All countries that are members of (P463) the European Union (Q458)](https://w.wiki/AHCe)
 
 ```
-SELECT ?country ?countryLabel
-WHERE
-{
-  # Subject  # Member of  # The European Union
-  ?country   wdt:P463     wd:Q458.
+SELECT
+    ?country
+    ?countryLabel
 
-  SERVICE wikibase:label { bd:serviceParam wikibase:language
-  "[AUTO_LANGUAGE], en". }
+WHERE {
+    # Subject  # Member of  # The European Union
+    ?country   wdt:P463     wd:Q458.
+
+    SERVICE wikibase:label { bd:serviceParam wikibase:language
+    "[AUTO_LANGUAGE], en". }
 }
 ```
 
@@ -169,19 +181,20 @@ WHERE
 
 The focus now shifts to the kind of data that's of interest to Scribe. [Wikidata](https://www.wikidata.org/) [lexicographical data](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data) maps out lemmas (base versions of words) as LIDs and attaches all forms of the lemma as queryable points of data. Let's start with a base query:
 
-#### [Query ten German (Q188) nouns (Q1084)](https://w.wiki/7APr)
+#### [Query ten German (Q188) nouns (Q1084)](https://w.wiki/AHCi)
 
 ```
-SELECT DISTINCT ?lexeme ?lemma
+SELECT DISTINCT
+    ?lexeme
+    ?lemma
+
 WHERE {
-  # Subject
-  ?lexeme a ontolex:LexicalEntry ;
-                 # German
-    dct:language wd:Q188 ;
-    # Predicate              # Noun
-    wikibase:lexicalCategory wd:Q1084 ;
-    # The following is like labels above.
-    wikibase:lemma ?lemma .
+    # Subject            # German
+    ?lexeme dct:language wd:Q188 ;
+        # Predicate              # Noun
+        wikibase:lexicalCategory wd:Q1084 ;
+        # The following is like labels above.
+        wikibase:lemma ?lemma .
 }
 
 LIMIT 10
@@ -191,27 +204,31 @@ First we start with a lexeme, then we call the language dictionary to define whi
 
 From here we need to get the forms (singular, plural, gender, etc) associated with the noun. Not every lemma is going to have all the points of data as they might not have been added or might not be grammatically valid, so for later steps we wrap form queries in `OPTIONAL` blocks.
 
-#### [Query ten German (Q188) nouns (Q1084) with singulars (Q110786) and plurals (Q146786)](https://w.wiki/78VF)
+#### [Query ten German (Q188) nouns (Q1084) with singulars (Q110786) and plurals (Q146786)](https://w.wiki/AHCj)
 
 ```
-SELECT DISTINCT ?lexeme ?lemma ?singular ?plural WHERE {
+SELECT DISTINCT
+    ?lexeme
+    ?lemma
+    ?singular
+    ?plural
 
-  ?lexeme a ontolex:LexicalEntry ;
-    dct:language wd:Q188 ;
-    wikibase:lexicalCategory wd:Q1084 ;
-    wikibase:lemma ?lemma .
+WHERE {
+    ?lexeme dct:language wd:Q188 ;
+        wikibase:lexicalCategory wd:Q1084 ;
+        wikibase:lemma ?lemma .
 
-  OPTIONAL {
-    ?lexeme ontolex:lexicalForm ?singularForm .
-    ?singularForm ontolex:representation ?singular ;
-      wikibase:grammaticalFeature wd:Q110786 ;
-  } .
+    OPTIONAL {
+        ?lexeme ontolex:lexicalForm ?singularForm .
+        ?singularForm ontolex:representation ?singular ;
+        wikibase:grammaticalFeature wd:Q110786 ;
+    } .
 
-  OPTIONAL {
-    ?lexeme ontolex:lexicalForm ?pluralForm .
-    ?pluralForm ontolex:representation ?plural ;
-      wikibase:grammaticalFeature wd:Q146786 ;
-  } .
+    OPTIONAL {
+        ?lexeme ontolex:lexicalForm ?pluralForm .
+        ?pluralForm ontolex:representation ?plural ;
+        wikibase:grammaticalFeature wd:Q146786 ;
+    } .
 }
 
 LIMIT 10
