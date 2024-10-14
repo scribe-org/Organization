@@ -1,0 +1,84 @@
+name: Notify Matrix Channel of Test Message
+
+on:
+  schedule:
+    - cron: '0 14 * * 3'  # Every Wednesday at 14:00 UTC 
+  workflow_dispatch:  # Allows manual triggering
+
+env:
+  FIRST_RUN_DATE: "2024-10-02"  # Set the first Wednesday you want this to run
+
+jobs:
+  weekindex:
+    runs-on: ubuntu-latest
+    outputs:
+      weekindex: ${{ steps.calculate.outputs.weekindex }}
+      next_bi_weekly_date: ${{ steps.calculate.outputs.next_bi_weekly_date }}
+    steps:
+      - name: Calculate week difference and next bi-weekly date
+        id: calculate
+        run: |
+          current_date=$(date +%Y-%m-%d)
+          start=$(date -d "${{ env.FIRST_RUN_DATE }}" +%s)
+          end=$(date -d "$current_date" +%s)
+          weekdiff=$(((end - start) / 60 / 60 / 24 / 7))
+          weekindex=$((weekdiff % 2))
+
+          # Calculate next bi-weekly date
+          if [ "$weekindex" -eq 0 ]; then
+            next_bi_weekly_date=$(date -d "$current_date + 14 days" +%Y-%m-%d)
+          else
+            next_bi_weekly_date=$(date -d "$current_date + 7 days" +%Y-%m-%d)
+          fi
+
+          echo "weekindex=$weekindex" >> "$GITHUB_OUTPUT"
+          echo "next_bi_weekly_date=$next_bi_weekly_date" >> "$GITHUB_OUTPUT"
+
+          echo "FIRST_RUN_DATE: ${{ env.FIRST_RUN_DATE }}" >> $GITHUB_STEP_SUMMARY
+          echo "current_date: $current_date" >> $GITHUB_STEP_SUMMARY
+          echo "weekdiff: $weekdiff" >> $GITHUB_STEP_SUMMARY
+          echo "weekindex: $weekindex" >> $GITHUB_STEP_SUMMARY
+          echo "next_bi_weekly_date: $next_bi_weekly_date" >> $GITHUB_STEP_SUMMARY
+          if [ "$weekindex" -eq 0 ]; then
+            echo "🟢 It's the first week of the bi-weekly cycle. The action is going to run." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "🔴 It's the second week of the bi-weekly cycle. The action is going to be skipped." >> $GITHUB_STEP_SUMMARY
+          fi
+
+  send-message:
+    if: ${{ needs.weekindex.outputs.weekindex == '0' }}
+    runs-on: ubuntu-latest
+    needs:
+      - weekindex
+    steps:
+      - name: Format EPOCH time
+        id: epoch-time
+        run: |
+          current_epoch_time=$(date +%s)
+          next_epoch_time=$(date -d "${{ needs.weekindex.outputs.next_bi_weekly_date }} 15:00:00" +%s)
+          echo "EPOCH_TIME=$current_epoch_time" >> $GITHUB_ENV
+          echo "NEXT_BI_WEEKLY_DATE=${{ needs.weekindex.outputs.next_bi_weekly_date }}" >> $GITHUB_ENV
+          echo "NEXT_EPOCH_TIME=$next_epoch_time" >> $GITHUB_ENV
+
+          echo "Current EPOCH time: $current_epoch_time" >> $GITHUB_STEP_SUMMARY
+          echo "Next bi-weekly date: ${{ needs.weekindex.outputs.next_bi_weekly_date }}" >> $GITHUB_STEP_SUMMARY
+          echo "Next EPOCH time (for sync): $next_epoch_time" >> $GITHUB_STEP_SUMMARY
+
+      - name: Send message to Matrix channel
+        id: matrix-chat-message
+        uses: fadenb/matrix-chat-message@v0.0.6
+        with:
+          homeserver: 'matrix.org'
+          token: ${{ secrets.MATRIX_ACCESS_TOKEN }}
+          channel: ${{ secrets.MATRIX_ROOM_ID }}
+          message: |
+            Hey all! 🤖👋 Here's the reminder for [this Saturday's dev sync at 15:00 UTC](https://zonestamp.toolforge.org/${{ env.NEXT_EPOCH_TIME }}) 🤝♻️
+
+            Details for it::
+            - Call link: https://call.element.io/room/#/activist-dev-sync?roomId=!UddhHUSXxHAoAnImXb:call.ems.host&password=ASriEQCG4DE6Q1QSB313zig0bhLd62RN
+            - This week’s pad: https://etherpad.wikimedia.org/p/activist-dev-sync-${{ env.NEXT_BI_WEEKLY_DATE }}
+            - All pads: https://etherpad.wikimedia.org/p/activist-dev-sync
+
+            Please reply with anything you'd like to discuss 🧕🏼‍♀️
+
+            Thanks and have a great day! ❤️
