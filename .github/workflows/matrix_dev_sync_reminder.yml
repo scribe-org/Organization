@@ -1,12 +1,11 @@
-name: Notify Matrix Channel of Test Message
-
+name: matrix_dev_sync_reminder
 on:
   schedule:
-    - cron: '0 14 * * 3'  # Every Wednesday at 14:00 UTC 
-  workflow_dispatch:  # Allows manual triggering
+    - cron: "0 14 * * 3" # Wednesdays at 14:00 UTC
+  workflow_dispatch: # manual triggering
 
 env:
-  FIRST_RUN_DATE: "2024-10-02"  # Set the first Wednesday you want this to run
+  FIRST_RUN_DATE: "2024-10-02"
 
 jobs:
   weekindex:
@@ -15,7 +14,7 @@ jobs:
       weekindex: ${{ steps.calculate.outputs.weekindex }}
       next_bi_weekly_date: ${{ steps.calculate.outputs.next_bi_weekly_date }}
     steps:
-      - name: Calculate week difference and next bi-weekly date
+      - name: Calculate Next Date
         id: calculate
         run: |
           current_date=$(date +%Y-%m-%d)
@@ -40,9 +39,9 @@ jobs:
           echo "weekindex: $weekindex" >> $GITHUB_STEP_SUMMARY
           echo "next_bi_weekly_date: $next_bi_weekly_date" >> $GITHUB_STEP_SUMMARY
           if [ "$weekindex" -eq 0 ]; then
-            echo "🟢 It's the first week of the bi-weekly cycle. The action is going to run." >> $GITHUB_STEP_SUMMARY
+            echo "🟢 It's the first week of the bi-weekly cycle. The action will run." >> $GITHUB_STEP_SUMMARY
           else
-            echo "🔴 It's the second week of the bi-weekly cycle. The action is going to be skipped." >> $GITHUB_STEP_SUMMARY
+            echo "🔴 It's the second week of the bi-weekly cycle. The action will be skipped." >> $GITHUB_STEP_SUMMARY
           fi
 
   send-message:
@@ -51,7 +50,7 @@ jobs:
     needs:
       - weekindex
     steps:
-      - name: Format EPOCH time
+      - name: Format EPOCH Time
         id: epoch-time
         run: |
           current_epoch_time=$(date +%s)
@@ -64,21 +63,21 @@ jobs:
           echo "Next bi-weekly date: ${{ needs.weekindex.outputs.next_bi_weekly_date }}" >> $GITHUB_STEP_SUMMARY
           echo "Next EPOCH time (for sync): $next_epoch_time" >> $GITHUB_STEP_SUMMARY
 
-      - name: Send message to Matrix channel
+      - name: Send Message to Matrix Channel
         id: matrix-chat-message
         uses: fadenb/matrix-chat-message@v0.0.6
         with:
-          homeserver: 'matrix.org'
+          homeserver: "matrix.org"
           token: ${{ secrets.MATRIX_ACCESS_TOKEN }}
           channel: ${{ secrets.MATRIX_ROOM_ID }}
           message: |
-            Hey all! 🤖👋 Here's the reminder for [this Saturday's dev sync at 15:00 UTC](https://zonestamp.toolforge.org/${{ env.NEXT_EPOCH_TIME }}) 🤝♻️
+            Hey all! 🤖👋 Here's the reminder for [this Saturday's dev sync at 15:00 UTC](https://zonestamp.toolforge.org/${{ env.NEXT_EPOCH_TIME }}) 🧑‍💻♻️
 
             Details for it::
-            - Call link: https://call.element.io/room/#/activist-dev-sync?roomId=!UddhHUSXxHAoAnImXb:call.ems.host&password=ASriEQCG4DE6Q1QSB313zig0bhLd62RN
-            - This week’s pad: https://etherpad.wikimedia.org/p/activist-dev-sync-${{ env.NEXT_BI_WEEKLY_DATE }}
-            - All pads: https://etherpad.wikimedia.org/p/activist-dev-sync
+            - Call link: https://call.element.io/room/#/scribe-dev-sync?roomId=!UddhHUSXxHAoAnImXb:call.ems.host&password=ASriEQCG4DE6Q1QSB313zig0bhLd62RN
+            - This week's pad: https://etherpad.wikimedia.org/p/scribe-dev-sync-${{ env.NEXT_BI_WEEKLY_DATE }}
+            - All pads: https://etherpad.wikimedia.org/p/scribe-dev-sync
 
-            Please reply with anything you'd like to discuss 🧕🏼‍♀️
+            Please reply in the thread for this message with anything you'd like to discuss 🧵
 
-            Thanks and have a great day! ❤️
+            Thanks and have a great day! 💙
