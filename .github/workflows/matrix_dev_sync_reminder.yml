@@ -63,6 +63,80 @@ jobs:
           echo "Next bi-weekly date: ${{ needs.weekindex.outputs.next_bi_weekly_date }}" >> $GITHUB_STEP_SUMMARY
           echo "Next EPOCH time (for sync): $next_epoch_time" >> $GITHUB_STEP_SUMMARY
 
+      - name: Etherpad Creation
+        env:
+            NEXT_BI_WEEKLY_DATE: ${{ env.NEXT_BI_WEEKLY_DATE }}
+            NEXT_EPOCH_TIME: ${{ env.NEXT_EPOCH_TIME }}
+        run: |
+                pip install requests
+                python - <<EOF
+                import requests
+                import os
+            
+                next_epoch_time = os.environ.get('NEXT_EPOCH_TIME')
+                next_bi_weekly_date = os.environ.get('NEXT_BI_WEEKLY_DATE')
+            
+                pad_name = f'scribe-dev-sync-{next_bi_weekly_date}'
+                url = f'https://etherpad.wikimedia.org/p/{pad_name}/import'
+                print(f"Importing content to: https://etherpad.wikimedia.org/p/{pad_name}")
+            
+                # The text you want to add to the pad
+                content = f"""<html><body>
+                <h1>Scribe Dev Sync {next_bi_weekly_date}</h1>
+            
+                <p>Pad directory: <a href="https://etherpad.wikimedia.org/p/scribe-dev-sync">https://etherpad.wikimedia.org/p/scribe-dev-sync</a><br>
+                ZoneStamp: <a href="https://zonestamp.toolforge.org/{next_epoch_time}">https://zonestamp.toolforge.org/{next_epoch_time}</a></p>
+            
+                <h2>Participants (please list yourself if you'd like to)</h2>
+                <ul>
+                  <li>Participant</li>
+                </ul>
+            
+                <h2>Topics</h2>
+                <ul>
+                  <li>All: introductions 👋</li>
+                  <li>All: does anyone want a calendar invite to the dev sync? If so, send them out :)</li>
+                  <li>Recap done by: NAME</li>
+                  <li>Go through the project board: <a href="https://github.com/orgs/scribe-org/projects/1">Project Board</a></li>
+                  <li>Name:</li>
+                </ul>
+            
+                <h2>Tasks (strikethrough ^/⌘ + 5 to mark as complete)</h2>
+                <ul>
+                  <li>Task</li>
+                </ul>
+            
+                <h2>Recap</h2>
+            
+                <p>Here's the recap for today's/Saturday's dev sync 🧑‍💻♻️</p>
+            
+                <ul>
+                  <li><a href="https://etherpad.wikimedia.org/p/scribe-dev-sync-{next_bi_weekly_date}">Pad for this week</a></li>
+                  <li>Note</li>
+                </ul>
+            
+                <p>The next dev sync will be <a href="https://zonestamp.toolforge.org/{next_epoch_time}">Saturday {next_bi_weekly_date} at 15:00 UTC</a>.</p>
+            
+                <p>Nice outro 😊</p>
+            
+                </body></html>"""
+            
+                # Prepare the file to upload
+                files = {
+                    'file': ('import.html', content.encode('utf-8'), 'text/html'),
+                }
+            
+                response = requests.post(url, files=files)
+            
+                if response.status_code in [200, 302]:
+                    print(f"Content imported successfully into pad '{pad_name}'.")
+                elif response.status_code == 413:
+                    print("The file is too large to upload.")
+                else:
+                    print(f"Failed to import content. Status code: {response.status_code}")
+                    print(response.text)
+                EOF
+
       - name: Send Message to Matrix Channel
         id: matrix-chat-message
         uses: fadenb/matrix-chat-message@v0.0.6
@@ -84,3 +158,4 @@ jobs:
             Please reply in the thread for this message with anything you'd like to discuss 🧵
 
             Thanks and have a great day! 💙
+            
