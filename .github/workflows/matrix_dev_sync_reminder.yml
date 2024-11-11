@@ -115,11 +115,11 @@ jobs:
                 <li>All: introductions 👋</li>
                 <li>All: does anyone want a calendar invite to the dev sync? If so, send them out :)
                     <ul>
-                        <li>If you would like an invite, please message [Andrew]https://app.element.io/#/room/!ximYdSmPcYHLkbsbha:matrix.org on Matrix/Element</li>
+                        <li>If you would like an invite, please message Andrew on Matrix/Element</li>
                     </ul>
                   </li>
                 <li>Recap done by: NAME</li>
-                <li>Go through the project board: https://github.com/orgs/scribe-org/projects/1</a></li>
+                <li>Go through the [project board](https://github.com/orgs/scribe-org/projects/1)</a></li>
                 <li>Name:</li>
               </ul>
               <br> <!-- Added space -->
@@ -132,15 +132,16 @@ jobs:
           
               <h2>Recap</h2>
               <br> <!-- Added space -->
+              <br> <!-- Added space -->
               <p>Here's the recap for today's/Saturday's dev sync 🧑‍💻♻️</p>
           
               <ul>
-                <li>[Pad for this week] https://etherpad.wikimedia.org/p/scribe-dev-sync-${{ env.NEXT_BI_WEEKLY_DATE }} </a></li>
+                <li>[Pad for this week](https://etherpad.wikimedia.org/p/scribe-dev-sync-${{ env.NEXT_BI_WEEKLY_DATE }}) </a></li>
                 <li>Note</li>
               </ul>
               <br> <!-- Added space -->
           
-                  <p>The next dev sync will be [Saturday the {next_next_bi_weekly_date} at 15:00 UTC] https://zonestamp.toolforge.org/{next_next_epoch_time} </a>.</p>
+                  <p>The next dev sync will be [Saturday the {next_next_bi_weekly_date} at 15:00 UTC](https://zonestamp.toolforge.org/{next_next_epoch_time}) </a>.</p>
             
               <br> <!-- Added space -->
               <p>Nice outro 😊</p>
