@@ -140,7 +140,7 @@ jobs:
           </ul>
           <br>
 
-              <p>The next dev sync will be [Saturday the {next_next_bi_weekly_date} at 15:00 UTC](https://zonestamp.toolforge.org/${{ env.NEXT_NEXT_BI_WEEKLY_DATE }})</a>.</p>
+              <p>The next dev sync will be [Saturday the {next_next_bi_weekly_date} at 15:00 UTC](https://zonestamp.toolforge.org/${{ env.NEXT_NEXT_EPOCH_TIME }})</a>.</p>
 
           <br>
           <p>Nice outro 😊</p>
