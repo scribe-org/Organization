@@ -178,7 +178,7 @@ jobs:
 
             Details for the upcoming sync:
 
-            - Call link: https://call.element.io/room/#/scribe-dev-sync?roomId=!UddhHUSXxHAoAnImXb:call.ems.host&password=ASriEQCG4DE6Q1QSB313zig0bhLd62RN
+            - Call link: https://call.element.io/room/#/scribe-dev-sync?password=6fYAt2r2lnhntXpNu1b1BrCkDy1NHTXJ&roomId=%21MEatqydcuQXoqGtjfR%3Acall.ems.host
             - This week's pad: https://etherpad.wikimedia.org/p/scribe-dev-sync-${{ env.NEXT_BI_WEEKLY_DATE }}
             - All Scribe pads: https://etherpad.wikimedia.org/p/scribe-dev-sync
 
