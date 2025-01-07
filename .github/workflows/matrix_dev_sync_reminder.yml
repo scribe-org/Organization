@@ -156,6 +156,7 @@ jobs:
           <br>
           <p>
             - [Pad for this week](https://etherpad.wikimedia.org/p/scribe-dev-sync-${{ env.NEXT_BI_WEEKLY_DATE }})
+            <br>
             - Note
           </p>
           <br>
