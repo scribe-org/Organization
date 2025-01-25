@@ -1,4 +1,4 @@
-# Architecture
+# [Architecture](https://github.com/scribe-org/Organization/blob/main/ARCHITECTURE.md)
 
 This markdown file documents the architecture for the whole of [Scribe](https://github.com/scribe-org) - including the applications, the services, the processes, and the external systems and sources with which it interacts. As the file is meant to be a living document, edits are welcome to expand and update it!
 
