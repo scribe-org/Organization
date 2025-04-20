@@ -49,4 +49,3 @@ jobs:
           token: ${{ secrets.OPERATION_MATRIX_ACCESS_TOKEN }}
           channel: ${{ secrets.OPERATION_MATRIX_ROOM_ID }}
           message: ${{ needs.calculate-contributors.outputs.message }}
-          
