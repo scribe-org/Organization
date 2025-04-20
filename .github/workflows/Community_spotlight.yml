@@ -46,6 +46,6 @@ jobs:
         uses: fadenb/matrix-chat-message@v0.0.6
         with:
           homeserver: 'matrix.org'
-          token: ${{ secrets.MATRIX_ACCESS_TOKEN }}
-          channel: ${{ secrets.MATRIX_ROOM_ID }}
+          token: ${{ secrets.OPERATION_MATRIX_ACCESS_TOKEN }}
+          channel: ${{ secrets.OPERATION_MATRIX_ROOM_ID }}
           message: ${{ needs.calculate-contributors.outputs.message }}
