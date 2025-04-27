@@ -2,7 +2,7 @@ name: matrix_dev_sync_reminder
 on:
   schedule:
     - cron: "0 14 * * 3" # Wednesdays at 14:00 UTC
-  workflow_dispatch: # manual triggering
+  workflow_dispatch: # allows manual triggering
 
 env:
   FIRST_RUN_DATE: "2024-11-13"
