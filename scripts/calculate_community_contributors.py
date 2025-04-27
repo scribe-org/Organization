@@ -176,7 +176,7 @@ def main():
     # Build the message.
     message = (
         "**Monthly Community Spotlight 👥🎉**\n\n"
-        f"Here are the top GitHub community contributors to all **{ORG_NAME}** projects from "
+        f"Here are the top community contributors on GitHub to all **{ORG_NAME}** projects from "
         f"**{start_date.strftime('%B %d')}** to **{end_date.strftime('%B %d')}** "
         "(organization members not included):\n\n"
     )
