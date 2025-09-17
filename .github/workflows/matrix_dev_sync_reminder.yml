@@ -219,7 +219,7 @@ jobs:
 
           # Prepare the file to upload.
           headers = {
-                  'User-Agent': 'Scribe-Dev-Sync-Bot' (https://github.com/scribe-org/Organization; team@scri.be)'
+                  'User-Agent': 'Scribe-Dev-Sync-Bot (https://github.com/scribe-org/Organization; team@scri.be)'
               }
           files = {
               'file': ('import.html', content.encode('utf-8'), 'text/html'),
