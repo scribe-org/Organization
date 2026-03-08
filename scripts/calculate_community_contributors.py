@@ -202,7 +202,7 @@ def main():
         else:
             message += "    - No pull requests found\n"
 
-    message += "\n\nThank you all for the amazing work over the last month! 💙"
+    message += "\n\nThank you all for the amazing work over the last month! 💙🩵"
 
     # Write message to file for reference.
     with open("message.txt", "w") as f:
