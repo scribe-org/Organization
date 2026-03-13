@@ -1,3 +1,5 @@
+<a id="top"></a>
+
 # [Wikidata and Scribe Guide](https://github.com/scribe-org/Organization/blob/main/WIKIDATAGUIDE.md)
 
 [Wikidata](https://www.wikidata.org/) is a project from the [Wikimedia Foundation](https://www.wikimedia.org/) - Specifically [Wikimedia Deutschland](https://www.wikimedia.de/) (the German chapter of Wikimedia). Like Wikimedia's flagship project [Wikipedia](https://www.wikipedia.org/), [Wikidata](https://www.wikidata.org/) is an open information platform that anyone can edit. More specifically [Wikidata](https://www.wikidata.org/) is an open knowledge graph that is situated in the heart of the [Linked Open Data](https://en.wikipedia.org/wiki/Linked_data) infrastructure that seeks to harness the internet to create a global database of public information that anyone can use.
@@ -8,28 +10,24 @@ Scribe uses [Wikidata](https://www.wikidata.org/) - specifically the [lexicograp
 
 This markdown file provides important information about [Wikidata](https://www.wikidata.org/) that is geared towards people interested in learning about it in relation to working on Scribe applications. Edits are welcome to expand and change this document as the community sees fit!
 
-<a id="contents"></a>
+# Contents
 
-# **Contents**
-
-- [First steps into Wikidata](#first-steps)
+- [First steps into Wikidata](#first-steps-into-wikidata)
   - [Data structure](#data-structure)
   - [SPQARL](#spaqrl)
   - [First queries](#first-queries)
   - [Lexeme queries](#lexeme-queries)
-- [Scribe-Data and Wikidata](#scribe-data)
-- [Scribe-Server and Wikidata](#scribe-server)
+- [Scribe-Data and Wikidata](#scribe-data-and-wikidata)
+- [Scribe-Server and Wikidata](#scribe-server-and-wikidata)
 - [Further resources](#further-resources)
 
-<a id="first-steps"></a>
-
-# First Steps into Wikidata [`⇧`](#contents)
+# First Steps into Wikidata
 
 An important distinction to make is that [Wikidata](https://www.wikidata.org/) is an instance of [Wikibase](https://wikiba.se/) - an open source software for creating collaborative knowledge bases. Wikimedia Deutschland also serves other [Wikibase](https://wikiba.se/) instances such as those found on [Wikibase Cloud](https://www.wikibase.cloud/) that are hosted and [Wikibase Suite](https://www.mediawiki.org/wiki/Wikibase/Docker) that provides [dockerized](https://www.docker.com/) versions of the software for self hosting.
 
-<a id="data-structure"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-### Data structure [`⇧`](#contents)
+### Data structure
 
 [Wikidata](https://www.wikidata.org/) and other [Wikibase](https://wikiba.se/) instances are not relational databases, but rather [RDF (Resource Description Framework)](https://en.wikipedia.org/wiki/Resource_Description_Framework) graph databases known as [triplestores](https://en.wikipedia.org/wiki/Triplestore). RDF is a directed graph composed of triple statements that include:
 
@@ -50,9 +48,9 @@ One of the main benefits of RDF triplestores is that there are no limits based o
 
 When comparing to conventional data structures, it's important to mark the distinction that [Wikidata](https://www.wikidata.org/) data is not stored in tables. There are [regular dumps of Wikidata](https://www.wikidata.org/wiki/Wikidata:Database_download) that also come in relational database forms (with `subject`, `predicate` and `object` columns) as well as JSON and other types, but the data on [Wikidata](https://www.wikidata.org/) is stored using RDF relationships.
 
-<a id="spaqrl"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-### SPARQL [`⇧`](#contents)
+### SPARQL
 
 Because the structure of [Wikidata](https://www.wikidata.org/) data is different from traditional relational databases, we also need a different way to query it. [SPARQL](https://en.wikipedia.org/wiki/SPARQL) - the [recursive acronym](https://en.wikipedia.org/wiki/Recursive_acronym) being "SPARQL Protocol and RDF Query Language" - is a standard of querying RDF formatted data.
 
@@ -60,9 +58,9 @@ Another interesting part of SPARQL is that it's also an HTTP transport protocol,
 
 Note that there are also [aggregation functions](https://en.wikibooks.org/wiki/SPARQL/Aggregate_functions) for SPARQL as in any query language. The only usage of aggregation functions for Scribe is [check_language_data.sparql](https://github.com/scribe-org/Scribe-Data/blob/main/src/scribe_data/check_language_data.sparql) within [Scribe-Data](https://github.com/scribe-org/Scribe-Data). This query allows us to get the totals for categories of words like nouns, verbs and others on a per language basis. The results allow the team to check the overall coverage for the language within [Wikidata](https://www.wikidata.org/) lexemes to prioritize which languages to implement next.
 
-<a id="first-queries"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-### First queries [`⇧`](#contents)
+### First queries
 
 Below we find the most common [Wikidata](https://www.wikidata.org/) example of [Q42 - Douglas Adams](https://www.wikidata.org/wiki/Q42), who was specifically given this in homage to his book [The Hitchhiker's Guide to the Galaxy](https://en.wikipedia.org/wiki/The_Hitchhiker%27s_Guide_to_the_Galaxy) in which the "Ultimate Question of Life, the Universe, and Everything" is found to be the number 42 :)
 
@@ -175,9 +173,9 @@ WHERE {
 }
 ```
 
-<a id="lexeme-queries"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-### Lexeme queries [`⇧`](#contents)
+### Lexeme queries
 
 The focus now shifts to the kind of data that's of interest to Scribe. [Wikidata](https://www.wikidata.org/) [lexicographical data](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data) maps out lemmas (base versions of words) as LIDs and attaches all forms of the lemma as queryable points of data. Let's start with a base query:
 
@@ -236,9 +234,9 @@ LIMIT 10
 
 From here we're able to create most of the queries used by Scribe by changing the language that lexemes should be associated with, the category of word that we need (nouns, verbs, etc) and editing the optional form selections to include all needed information about the lemma that's needed for Scribe applications.
 
-<a id="scribe-data"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-# Scribe-Data and Wikidata [`⇧`](#contents)
+# Scribe-Data and Wikidata
 
 [Scribe-Data](https://github.com/scribe-org/Scribe-Data) data process that interfaces with [Wikidata's lexicographical data](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data) with the following functionality:
 
@@ -253,15 +251,15 @@ Functionality not related to [Wikidata](https://www.wikidata.org/) includes:
 - Generating Emoji-trigger word relations for emoji autosuggestions and autocompletions using [Unicode CLDR](https://github.com/unicode-org/cldr) data
 - Creating autosuggest dictionaries based on the most frequent words in [Wikipedia](https://www.wikipedia.org/) and the words that most frequently follow them
 
-<a id="scribe-server"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-# Scribe-Server and Wikidata [`⇧`](#contents)
+# Scribe-Server and Wikidata
 
 [Scribe-Server](https://github.com/scribe-org/Scribe-Server) functions as an automation step that runs [Scribe-Data](https://github.com/scribe-org/Scribe-Data) as a package and automatically updates [Wikidata](https://www.wikidata.org/) based language packs for users to then download within Scribe applications.
 
-<a id="further-resources"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-# Further resources [`⇧`](#contents)
+# Further resources
 
 The following are other resources that the community suggests to broaden your understanding of [Wikidata](https://www.wikidata.org/) and using it in Scribe development. Some resources from above are repeated to assure that the this section is a comprehensive list.
 
@@ -288,3 +286,5 @@ The following are other resources that the community suggests to broaden your un
 
 - [SPARQLwrapper Python package](https://github.com/RDFLib/sparqlwrapper)
 - [Wikidata QID Labels VS Code extension](https://marketplace.visualstudio.com/items?itemName=blokhinnv.wikidataqidlabels)
+
+<sub><a href="#top">Back to top.</a></sub>
