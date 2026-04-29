@@ -2,7 +2,7 @@ name: matrix_dev_sync_reminder
 on:
   schedule:
     - cron: "0 14 * * 3" # Wednesdays at 14:00 UTC
-  workflow_dispatch: # allows manual triggering
+  workflow_dispatch:
 
 env:
   FIRST_RUN_DATE: "2024-11-13"
@@ -80,8 +80,8 @@ jobs:
         id: epoch-time
         run: |
           current_epoch_time=$(date +%s)
-          next_epoch_time=$(date -d "${{ needs.weekindex.outputs.next_bi_weekly_date }} 15:00:00" +%s)
-          next_next_epoch_time=$(date -d "${{ needs.weekindex.outputs.next_next_bi_weekly_date }} 15:00:00" +%s)
+          next_epoch_time=$(date -d "${{ needs.weekindex.outputs.next_bi_weekly_date }} 14:00:00" +%s)
+          next_next_epoch_time=$(date -d "${{ needs.weekindex.outputs.next_next_bi_weekly_date }} 14:00:00" +%s)
           echo "EPOCH_TIME=$current_epoch_time" >> $GITHUB_ENV
           echo "NEXT_BI_WEEKLY_DATE=${{ needs.weekindex.outputs.next_bi_weekly_date }}" >> $GITHUB_ENV
           echo "NEXT_EPOCH_TIME=$next_epoch_time" >> $GITHUB_ENV
@@ -205,7 +205,7 @@ jobs:
             - Note
           </p>
           <br>
-          <p>➡️ The next dev sync will be [Saturday {next_next_bi_weekly_date} at 15:00 UTC](https://zonestamp.toolforge.org/${{ env.NEXT_NEXT_EPOCH_TIME }}). New joiners are always welcome!</p>
+          <p>➡️ The next dev sync will be [Saturday {next_next_bi_weekly_date} at 14:00 UTC](https://zonestamp.toolforge.org/${{ env.NEXT_NEXT_EPOCH_TIME }}). New joiners are always welcome!</p>
           <br>
           <p>Nice outro 😊</p>
 
@@ -238,7 +238,7 @@ jobs:
           token: ${{ secrets.MATRIX_SCRIBE_BOT_ACCESS_TOKEN }}
           channel: ${{ secrets.MATRIX_GENERAL_ROOM_ID }}
           message: |
-            Hello all! 🤖👋 Here's the reminder for [this Saturday's dev sync at 15:00 UTC](https://zonestamp.toolforge.org/${{ env.NEXT_EPOCH_TIME }}) 🧑‍💻♻️
+            Hello all! 🤖👋 Here's the reminder for [this Saturday's dev sync at 14:00 UTC](https://zonestamp.toolforge.org/${{ env.NEXT_EPOCH_TIME }}) 🧑‍💻♻️
 
             For those new to the community, every two Saturdays the Scribe team does a call to discuss the projects. We use [Jitsi Meet](https://meet.jit.si) and a [pad from Wikimedia's Etherpad instance](https://etherpad.wikimedia.org/p/scribe-dev-sync-${{ env.NEXT_BI_WEEKLY_DATE }}) for taking notes :)${{ env.IS_CODE_NIGHT_SYNC == 'true' && '
 
