@@ -11,10 +11,11 @@ Notes
 - Ran via GitHub Actions workflow that requires GitHub environment variables
 """
 
-import requests
-from datetime import datetime
-from collections import defaultdict
 import os
+from collections import defaultdict
+from datetime import datetime
+
+import requests
 
 ORG_ID = "scribe-org"
 ORG_NAME = "Scribe"
@@ -202,7 +203,7 @@ def main():
         else:
             message += "    - No pull requests found\n"
 
-    message += "\n\nThank you all for the amazing work over the last month! 💙🩵"
+    message += "\n\nThank you all for the amazing work over the last month! 💙"
 
     # Write message to file for reference.
     with open("message.txt", "w") as f:

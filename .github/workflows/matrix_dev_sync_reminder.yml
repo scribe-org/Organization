@@ -205,7 +205,7 @@ jobs:
             - Note
           </p>
           <br>
-          <p>➡️ The next dev sync will be [Saturday {next_next_bi_weekly_date} at 14:00 UTC](https://zonestamp.toolforge.org/${{ env.NEXT_NEXT_EPOCH_TIME }}). New joiners are always welcome! 💙🩵</p>
+          <p>➡️ The next dev sync will be [Saturday {next_next_bi_weekly_date} at 14:00 UTC](https://zonestamp.toolforge.org/${{ env.NEXT_NEXT_EPOCH_TIME }}). New joiners are always welcome! 💙</p>
           <br>
           <p>Nice outro 😊</p>
 
@@ -251,4 +251,4 @@ jobs:
 
             Please reply in the thread for this message with anything you'd like to discuss 🧵
 
-            Thanks and have a great day! 💙🩵
+            Thanks and have a great day! 💙
