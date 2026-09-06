@@ -14,10 +14,13 @@ graph RL
     %% Scribe client applications
     IOS([Scribe-iOS\nkeyboard and conjugate\napplications])
     ADR([Scribe-Android\nkeyboard and conjugate\napplications])
-    DSK([Scribe-Desktop])
+    DSK([Scribe-Desktop\nGUI application])
+
+    %% Website
+    SCR([scri.be website])
 
     %% Client dependencies
-    I18N(Scribe-i18n)
+    I18N(Scribe-i18n\nGit submodule)
 
     %% Scribe data/service
     API{{Scribe-Server API}}
@@ -43,13 +46,13 @@ graph RL
     end
 
     %% DATA FLOW
-    I18N --->|Provides localization data| IOS & ADR & DSK
+    I18N --->|Provides localization data| IOS & ADR & DSK & SCR
     API --->|Client requests data| IOS & ADR & DSK
     DBS --->|API queries for data| API
     DATA --->|Job loads data| DBS
-    WD --->|Job extracts language data| DATA
-    WKTN --->|Job extracts translation data| DATA
-    UNI --->|Job extracts emoji data| DATA
+    WD --->|Job extracts\nlanguage data| DATA
+    WKTN --->|Job extracts\ntranslation data| DATA
+    UNI --->|Job extracts\nemoji data| DATA
 ```
 
 > [!NOTE]
