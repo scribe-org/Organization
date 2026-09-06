@@ -47,8 +47,10 @@ graph RL
     API --->|Client requests data| IOS & ADR & DSK
     DBS --->|API queries for data| API
     DATA --->|Job loads data| DBS
-    WD & WKTN & UNI --->|Job extracts data| DATA
+    WD --->|Job extracts language data| DATA
+    WKTN --->|Job extracts translation data| DATA
+    UNI --->|Job extracts emoji data| DATA
 ```
 
 > [!NOTE]
-> The architecture diagram above was created using [Mermaid](https://github.com/mermaid-js/mermaid), the diagramming tool with rendering supported in GitHub markdown.
+> The architecture diagram above was created using the diagramming tool [Mermaid](https://github.com/mermaid-js/mermaid), with rendering supported in GitHub markdown.
