@@ -25,7 +25,7 @@ graph RL
     %% Scribe data/service
     API{{Scribe-Server API}}
     DBS[(Scribe-Server DB)]
-    DATA[[Scribe-Data]]
+    DATA[[Scribe-Data CLI]]
 
     %% Data sources
     WD[(Wikidata)]
