@@ -47,7 +47,7 @@ graph RL
 
     %% DATA FLOW
     I18N --->|Provides localization data| IOS & ADR & DSK & SCR
-    API --->|Client requests data| IOS & ADR & DSK
+    API --->|Client requests language\ndata and contracts| IOS & ADR & DSK
     DBS --->|API queries for data| API
     DATA --->|Job loads data| DBS
     WD --->|Job extracts\nlanguage data| DATA
