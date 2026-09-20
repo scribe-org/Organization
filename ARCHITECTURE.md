@@ -7,30 +7,20 @@ This markdown file documents the architecture for the whole of [Scribe](https://
 
 ## Architecture Diagram
 
-The following diagram represents the relationships between the Scribe projects and external systems and sources, as they relate to the development plans for Scribe. In other words, the shown architecture depicts the complete state for Scribe, which is subject to revision if plans for Scribe change.
+The following diagram represents the relationships between the Scribe projects and external systems and sources, as they relate to the current and long term development plans for Scribe.
 
 ```mermaid
 graph RL
-    %% Scribe client applications
-    IOS([Scribe-iOS\nkeyboard and conjugate\napplications])
-    ADR([Scribe-Android\nkeyboard and conjugate\napplications])
-    DSK([Scribe-Desktop\nGUI application])
-
-    %% Website
-    SCR([scri.be website])
-
-    %% Client dependencies
-    I18N(Scribe-i18n\nGit submodule)
+    subgraph SOURCES [Data sources]
+        WD[(Wikidata)]
+        WKTN[(Wiktionary)]
+        UNI((Unicode))
+    end
 
     %% Scribe data/service
     API{{Scribe-Server API}}
     DBS[(Scribe-Server DB)]
     DATA[[Scribe-Data CLI]]
-
-    %% Data sources
-    WD[(Wikidata)]
-    WKTN[(Wiktionary)]
-    UNI((Unicode))
 
     %% Toolforge (WMCS)
     subgraph TFP [Toolforge platform]
@@ -44,6 +34,18 @@ graph RL
             DATA
         end
     end
+
+    %% Client dependencies
+    I18N(Scribe-i18n\nGit submodule)
+
+    subgraph CLIENTS [Scribe client applications]
+        IOS([Scribe-iOS\nkeyboard and conjugate\napplications])
+        ADR([Scribe-Android\nkeyboard and conjugate\napplications])
+        DSK([Scribe-Desktop\nGUI application])
+    end
+
+    %% Website
+    SCR([scri.be website])
 
     %% DATA FLOW
     I18N --->|Provides localization data| IOS & ADR & DSK & SCR
